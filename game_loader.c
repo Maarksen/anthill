@@ -12,6 +12,7 @@
 #include <stdio.h>
 #inlclude "game_loader.h"
 
+
 STATUS game_create_from_file(Game *game, char *filename) {
     if (game_create(game) == ERROR) {
         return ERROR;
