@@ -17,10 +17,11 @@
 /**
    Private functions
 */
-STATUS game_load_spaces(Game *game, char *filename);
+//STATUS game_load_spaces(Game *game, char *filename);
 STATUS game_add_space(Game *game, Space *space);
 Id game_get_space_id_at(Game *game, int position);
 STATUS game_set_player_location(Game *game, Id id);
+Id game_get_player_location(Game *game);
 STATUS game_set_object_location(Game *game, Id id);
 
 void game_command_unknown(Game *game);
@@ -46,6 +47,7 @@ STATUS game_create(Game *game) {
   return OK;
 }
 
+/*
 STATUS game_create_from_file(Game *game, char *filename) {
   if (game_create(game) == ERROR) {
     return ERROR;
@@ -55,12 +57,13 @@ STATUS game_create_from_file(Game *game, char *filename) {
     return ERROR;
   }
 
-  /* The player and the object are located in the first space */
+  //The player and the object are located in the first space
   game_set_player_location(game, game_get_space_id_at(game, 0));
   game_set_object_location(game, game_get_space_id_at(game, 0));
 
   return OK;
 }
+*/
 
 STATUS game_destroy(Game *game) {
   int i = 0;
@@ -237,7 +240,7 @@ void game_command_back(Game *game) {
   
   return;
 }
-
+/*
 STATUS game_load_spaces(Game *game, char *filename) {
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
@@ -293,3 +296,4 @@ STATUS game_load_spaces(Game *game, char *filename) {
 
   return status;
 }
+*/
