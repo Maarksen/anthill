@@ -69,7 +69,7 @@ STATUS player_print(player *player){
         return NULL;
     }
 
-    fprintf(stdout, "Player (ID: %ld Name: %s Location: %ld :Object: %s)\n", player->id, player->name, player->location, player->object);
+    fprintf(stdout, "Player (ID: %ld Name: %s Location: %ld :Object: %d)\n", player->id, player->name, player->location, object_print(player->object));
 
     return OK;
 }

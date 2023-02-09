@@ -14,6 +14,7 @@
 #include "command.h"
 #include "space.h"
 #include "types.h"
+#include "player.h"
 
 /**
  * @brief Game
@@ -25,6 +26,7 @@ typedef struct _Game {
   Id object_location;
   Space *spaces[MAX_SPACES];
   T_Command last_cmd;
+  player player;
 } Game;
 
 /**
