@@ -185,7 +185,7 @@ BOOL space_get_object(Space* space) {
   if (!space) {
     return FALSE;
   }
-  return space->object;
+  return TRUE;
 }
 
 /** It prints the space information

@@ -167,6 +167,14 @@ STATUS game_update(Game *game, T_Command cmd) {
       game_command_back(game);
       break;
 
+    case TAKE:
+      game_command_take(game);
+      break;
+
+    case DROP:
+      game_command_drop(game);
+      break;
+
     default:
       break;
   }
@@ -235,6 +243,40 @@ void game_command_back(Game *game) {
   current_id = space_get_north(game_get_space(game, space_id));
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
+  }
+  
+  return;
+}
+
+void game_command_take(Game *game) {
+  Id space_id = NO_ID;
+
+  space_id = game_get_player_location(game);
+
+  if (NO_ID == space_id) {
+    return;
+  }
+
+  if (space_get_object(game->spaces[space_id])) {
+    player_set_object(game->player1, game->object_location);
+  }
+  
+  return;
+}
+
+void game_command_drop(Game *game) {
+  Id space_id = NO_ID;
+  Id object_id = NO_ID;
+
+  space_id = game_get_player_location(game);
+  object_id = player_get_object(game->player1);
+
+  if (NO_ID == space_id || NO_ID == object_id) {
+    return;
+  }
+
+  if (space_set_object(game->spaces[space_id], object_id)) {
+    player_set_object(game->player1, NO_ID);
   }
   
   return;
