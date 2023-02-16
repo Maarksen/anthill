@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "player.h"
+#include "game.h"
 
 typedef struct Player{
     Id id;
@@ -60,13 +61,17 @@ player *player_set(player *player, Id id, char *name, Id location, Object *objec
     return player;
 }
 
-player* player_get(Game *game){
-    return game->player;
+STATUS player_set_location(player *player, Id id){
+    player->location = id;
+}
+
+Id player_get_location(player *player){
+    return player->location;
 }
 
 STATUS player_print(player *player){
     if(!player){
-        return NULL;
+        return ERROR;
     }
 
     fprintf(stdout, "Player (ID: %ld Name: %s Location: %ld :Object: %d)\n", player->id, player->name, player->location, object_print(player->object));

@@ -21,12 +21,11 @@
  *
  * This struct stores all the information of a game.
  */
-typedef struct _Game {
-  Id player_location;
+typedef struct Game {
   Id object_location;
   Space *spaces[MAX_SPACES];
   T_Command last_cmd;
-  player player;
+  player *player1;
 } Game;
 
 /**
@@ -38,6 +37,7 @@ typedef struct _Game {
   */
 STATUS game_create(Game *game);
 
+
 /**
   * @brief It creates a new game, with the data from a file
   * @author Profesores PPROG
@@ -46,7 +46,7 @@ STATUS game_create(Game *game);
   * @param filename a character pointer to the name of the file
   * @return OK, if everything goes well or ERROR if there was some mistake
   */
-//STATUS game_create_from_file(Game *game, char *filename);
+/*STATUS game_create_from_file(Game *game, char *filename);*/
 
 /**
   * @brief It updates the game, with the command executed
@@ -160,4 +160,14 @@ Id game_get_object_location(Game *game);
   * @return the last command
   */
 T_Command game_get_last_command(Game *game);
+
+player* player_get(Game *game);
+
+/**
+  * @brief It prints all atributes of a player
+  * @author Marek Buch
+  *
+  * @param player player structure we want to print
+  * @return a print message with player info
+  */
 #endif

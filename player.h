@@ -11,11 +11,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "game.h"
 #include "object.h"
 
 
 typedef struct Player player;
+
 
 /**
   * @brief It creates a new player, allocating memory and initializing its members
@@ -48,20 +48,30 @@ STATUS player_destroy(player *player);
 player *player_set(player *player, Id id, char *name, Id location, Object *object);
 
 /**
-  * @brief It return a player
+  * @brief It sets players location
   * @author Marek Buch
   *
-  * @param game where we are getting the player from
-  * @return a player already existing
+  * @param player where we are getting the player from
+  * @param id the location where to set the player
+  * @return status
   */
-player* player_get(Game *game);
+STATUS player_set_location(player *player, Id id);
 
 /**
-  * @brief It prints all atributes of a player
+  * @brief It returns players location
   * @author Marek Buch
   *
-  * @param player player structure we want to print
-  * @return a print message with player info
+  * @param player where we are getting the player location from from
+  * @return players location
+  */
+Id player_get_location(player *player);
+
+/**
+  * @brief It prints player
+  * @author Marek Buch
+  *
+  * @param player where we are getting the player info from
+  * @return player info
   */
 STATUS player_print(player *player);
 

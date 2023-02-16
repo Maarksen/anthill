@@ -14,6 +14,7 @@
 #include "game_loader.h"
 #include "game.h"
 #include "space.h"
+#include "player.h"
 
 STATUS game_load_spaces(Game *game, char *filename);
 
@@ -26,7 +27,7 @@ STATUS game_create_from_file(Game *game, char *filename) {
     if (game_load_spaces(game, filename) == ERROR) {
         return ERROR;
     }
-
+    player_create(1, "player");
     /* The player and the object are located in the first space */
     game_set_player_location(game, game_get_space_id_at(game, 0));
     game_set_object_location(game, game_get_space_id_at(game, 0));
