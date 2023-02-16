@@ -40,6 +40,15 @@ STATUS object_destroy(Object* object);
   * @param id the identification number for the new space
   * @return a new space, initialized
   */
+STATUS object_set_id(Object* object, Id id);
+
+/**
+  * @brief It creates a new space, allocating memory and initializing its memebers
+  * @author Profesores PPROG
+  * 
+  * @param id the identification number for the new space
+  * @return a new space, initialized
+  */
 Id object_get_id(Object* object);
 
 /**
