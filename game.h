@@ -21,11 +21,11 @@
  *
  * This struct stores all the information of a game.
  */
-typedef struct Game {
+typedef struct _Game {
   Id object_location;
   Space *spaces[MAX_SPACES];
   T_Command last_cmd;
-  player *player1;
+  Player *player;
 } Game;
 
 /**
@@ -164,9 +164,7 @@ Id game_get_object_location(Game *game);
   */
 T_Command game_get_last_command(Game *game);
 
-player* player_create(Game *game, Id id, char* player_name);
-
-player* player_get(Game *game);
+Player* player_get(Game *game);
 
 /**
   * @brief It prints all atributes of a player

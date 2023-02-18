@@ -37,7 +37,7 @@ game_loop.o : game_loop.c
 	@echo "# Has changed $<"
 	$(CC) $(CFLAGS) -c $<
 
- game.o : game.c
+ game.o : game.c game.h
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"

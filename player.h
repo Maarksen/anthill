@@ -8,17 +8,17 @@
  * @copyright GNU Public License
  */
 
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "object.h"
 
-typedef struct Player{
-    Id id;
-    char *name;
-    Id location;
-    Object *object;
-}player;
+typedef struct _Player Player;
+
+Player* player_create(Id id, char* player_name);
 
 /**
   * @brief It destroys a player that was already created
@@ -27,7 +27,7 @@ typedef struct Player{
   * @param player a player structure we want to destroy
   * @return status report
   */
-STATUS player_destroy(player *player);
+STATUS player_destroy(Player *player);
 
 /**
   * @brief It sets the atributes of a created player
@@ -39,7 +39,7 @@ STATUS player_destroy(player *player);
   * @param object is the object of the player
   * @return a player with set atributes
   */
-player *player_set(player *player, Id id, char *name, Id location, Object *object);
+Player *player_set(Player *player, Id id, char *name, Id location, Object *object);
 
 /**
   * @brief It sets players location
@@ -49,7 +49,7 @@ player *player_set(player *player, Id id, char *name, Id location, Object *objec
   * @param id the location where to set the player
   * @return status
   */
-STATUS player_set_location(player *player, Id id);
+STATUS player_set_location(Player *player, Id id);
 
 /**
   * @brief It returns players location
@@ -58,7 +58,7 @@ STATUS player_set_location(player *player, Id id);
   * @param player where we are getting the player location from from
   * @return players location
   */
-Id player_get_location(player *player);
+Id player_get_location(Player *player);
 
 /**
   * @brief It prints player
@@ -67,10 +67,6 @@ Id player_get_location(player *player);
   * @param player where we are getting the player info from
   * @return player info
   */
-STATUS player_print(player *player);
+STATUS player_print(Player *player);
 
-
-#ifndef SEED_SRC_PLAYER_H
-#define SEED_SRC_PLAYER_H
-
-#endif //SEED_SRC_PLAYER_H
+#endif 

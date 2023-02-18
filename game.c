@@ -33,7 +33,7 @@ STATUS game_create(Game *game) {
   for (i = 0; i < MAX_SPACES; i++) {
     game->spaces[i] = NULL;
   }
-  player_create(game, 1, "marek");
+  game->player = player_create(1, "marek");
   game->object_location = NO_ID;
   game->last_cmd = NO_CMD;
 
@@ -98,23 +98,22 @@ STATUS game_set_player_location(Game *game, Id id) {
   if (id == NO_ID) {
     return ERROR;
   }
-    player_set_location(game->player1, id);
+    player_set_location(game->player, id);
   return OK;
 }
 
 STATUS game_set_object_location(Game *game, Id id) {
-  int i = 0;
-
   if (id == NO_ID) {
     return ERROR;
   }
   
   game->object_location = id;
   space_set_object(game_get_space(game, id), TRUE);
+  return OK;
 }
 
 Id game_get_player_location(Game *game) {
-  return player_get_location(game->player1);
+  return player_get_location(game->player);
 }
 
 Id game_get_object_location(Game *game) {
@@ -171,7 +170,7 @@ void game_print_data(Game *game) {
   }
 
   printf("=> Object location: %d\n", (int)game->object_location);
-  printf("=> Player location: %d\n", (int)player_get_location(game->player1));
+  printf("=> Player location: %d\n", (int)player_get_location(game->player));
 }
 
 BOOL game_is_over(Game *game) {
@@ -232,7 +231,7 @@ void game_command_take(Game *game) {
   }
 
   if (space_get_object(game->spaces[space_id])) {
-    player_set_object(game->player1, game->object_location);
+    /*player_set_object(game->player, game->object_location);*/
   }
   
   return;
@@ -243,37 +242,19 @@ void game_command_drop(Game *game) {
   Id object_id = NO_ID;
 
   space_id = game_get_player_location(game);
-  object_id = player_get_object(game->player1);
+  object_id = NO_ID;/*player_get_object(game->player)*/
 
   if (NO_ID == space_id || NO_ID == object_id) {
     return;
   }
 
   if (space_set_object(game->spaces[space_id], object_id)) {
-    player_set_object(game->player1, NO_ID);
+    /*player_set_object(game->player, NO_ID);*/
   }
   
   return;
 }
 
-player* player_create(Game *game, Id id, char* player_name){
-    player *new_player = NULL;
-    if(id == NO_ID){
-        return NULL;
-    }
-    new_player = malloc(sizeof(player));
-    if(new_player == NULL){
-        return NULL;
-    }
-    new_player->id = id;
-    new_player->name = player_name;
-    new_player->location = NO_ID;
-    /*new_player->object = NULL;*/
-    game->player1 = new_player;
-
-    return game->player1;
-}
-
-player* player_get(Game *game){
-    return game->player1;
+Player* player_get(Game *game){
+    return game->player;
 }
