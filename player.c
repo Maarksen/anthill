@@ -12,32 +12,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "player.h"
-#include "game.h"
-
-typedef struct Player{
-    Id id;
-    char *name;
-    Id location;
-    Object *object;
-}player;
-
-player* player_create(Id id, char* player_name){
-    player *new_player = NULL;
-    if(id == NO_ID){
-        return NULL;
-    }
-    new_player = malloc(sizeof(player));
-    if(new_player == NULL){
-        return NULL;
-    }
-
-    new_player->id = id;
-    new_player->name = player_name;
-    new_player->location = 1;
-    new_player->object = NULL;
-
-    return new_player;
-}
 
 STATUS player_destroy(player *player){
     if (!player) {
@@ -62,11 +36,16 @@ player *player_set(player *player, Id id, char *name, Id location, Object *objec
 }
 
 STATUS player_set_location(player *player, Id id){
-    player->location = id;
+    if(player != NULL) {
+        player->location = id;
+        return OK;
+    }
 }
 
 Id player_get_location(player *player){
-    return player->location;
+    if(player != NULL) {
+        return player->location;
+    }
 }
 
 STATUS player_print(player *player){

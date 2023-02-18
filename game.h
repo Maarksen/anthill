@@ -58,6 +58,9 @@ STATUS game_create(Game *game);
   */
 STATUS game_update(Game *game, T_Command cmd);
 
+void game_command_take(Game *game);
+void game_command_drop(Game *game);
+
 /**
   * @brief It destroys a game, freeing the allocated memory
   * @author Profesores PPROG
@@ -160,6 +163,8 @@ Id game_get_object_location(Game *game);
   * @return the last command
   */
 T_Command game_get_last_command(Game *game);
+
+player* player_create(Game *game, Id id, char* player_name);
 
 player* player_get(Game *game);
 

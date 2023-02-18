@@ -13,18 +13,12 @@
 #include <string.h>
 #include "object.h"
 
-
-typedef struct Player player;
-
-
-/**
-  * @brief It creates a new player, allocating memory and initializing its members
-  * @author Marek Buch
-  *
-  * @param id the identification number for the new space
-  * @return a new player, initialized
-  */
-player* player_create(Id id, char *player_name);
+typedef struct Player{
+    Id id;
+    char *name;
+    Id location;
+    Object *object;
+}player;
 
 /**
   * @brief It destroys a player that was already created
