@@ -7,14 +7,14 @@ all : $(EXE)
 
 .PHONY : clean
 clean :
-	rm -f *.o core $(EXE)
+	rm -rf *.o
 
-$(EXE) : % : command.o game_loader.o game_loop.o game.o graphic_engine.o object.o player.o space.o
+$(EXE) : % : command.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"
 	@echo "# Has changed $<"
-	$(CC) $(CFLAGS) -o $@ command.o game_loader.o game_loop.o game.o graphic_engine.o object.o player.o space.o $(LIB)
+	$(CC) $(CFLAGS) -o $@ command.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o $(LIB) 
 
 command.o : command.c command.h
 	@echo "#---------------------------"
@@ -31,6 +31,13 @@ game_loader.o : game_loader.c game_loader.h
 	$(CC) $(CFLAGS) -c $<
 
 game_loop.o : game_loop.c
+	@echo "#---------------------------"
+	@echo "# Generating $@ "
+	@echo "# Depepends on $^"
+	@echo "# Has changed $<"
+	$(CC) $(CFLAGS) -c $<
+
+ game_reader.o : game_reader.c game_reader.h
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"

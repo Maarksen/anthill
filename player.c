@@ -17,7 +17,7 @@ struct _Player{
     Id id;
     char *name;
     Id location;
-    Object *object;
+    BOOL object;
 };
 
 Player* player_create(Id id, char* player_name){
@@ -46,7 +46,7 @@ STATUS player_destroy(Player *player){
     return OK;
 }
 
-Player *player_set(Player *player, Id id, char *name, Id location, Object *object){
+Player *player_set(Player *player, Id id, char *name, Id location, BOOL object){
     if(player == NULL){
         return NULL;
     }
@@ -63,12 +63,36 @@ STATUS player_set_location(Player *player, Id id){
         player->location = id;
         return OK;
     }
+    return ERROR;
 }
 
 Id player_get_location(Player *player){
     if(player != NULL) {
         return player->location;
     }
+    return NO_ID;
+}
+
+Id player_get_id(Player *player){
+    if(player != NULL) {
+        return player->id;
+    }
+    return NO_ID;
+}
+
+STATUS player_set_object(Player *player, BOOL object){
+    if(player != NULL) {
+        player->object = object;
+        return OK;
+    }
+    return ERROR;
+}
+
+BOOL player_get_object(Player *player){
+    if(player != NULL) {
+        return player->object;
+    }
+    return FALSE;
 }
 
 STATUS player_print(Player *player){
@@ -76,7 +100,7 @@ STATUS player_print(Player *player){
         return ERROR;
     }
 
-    fprintf(stdout, "Player (ID: %ld Name: %s Location: %ld :Object: %d)\n", player->id, player->name, player->location, object_print(player->object));
+    fprintf(stdout, "Player (ID: %ld Name: %s Location: %ld :Object: %s)\n", player->id, player->name, player->location, (player->object ? "True" : "False"));
 
     return OK;
 }

@@ -39,7 +39,7 @@ STATUS player_destroy(Player *player);
   * @param object is the object of the player
   * @return a player with set atributes
   */
-Player *player_set(Player *player, Id id, char *name, Id location, Object *object);
+Player *player_set(Player *player, Id id, char *name, Id location, BOOL object);
 
 /**
   * @brief It sets players location
@@ -59,6 +59,10 @@ STATUS player_set_location(Player *player, Id id);
   * @return players location
   */
 Id player_get_location(Player *player);
+
+Id player_get_id(Player *player);
+STATUS player_set_object(Player *player, BOOL object);
+BOOL player_get_object(Player *player);
 
 /**
   * @brief It prints player

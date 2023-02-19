@@ -2,41 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "game_reader.h"
 #include "game.h"
-#include "space.h"
-
-STATUS game_load_spaces(Game *game, char *filename){
-  int i;
-
-  for (i = 0; i < MAX_SPACES; i++) {
-    game->spaces[i] = NULL;
-  }
-
-  game->player_location = NO_ID;
-  game->object_location = NO_ID;
-  game->last_cmd = NO_CMD;
-
-  return OK;
-
-}
-
-
-STATUS game_create_from_file(Game *game, char *filename) {
-    if (game_create(game) == ERROR) {
-        return ERROR;
-    }
-
-    if (game_load_spaces(game, filename) == ERROR) {
-        return ERROR;
-    }
-
-    /* The player and the object are located in the first space */
-    game_set_player_location(game, game_get_space_id_at(game, 0));
-    game_set_object_location(game, game_get_space_id_at(game, 0));
-
-    return OK;
-}
+#include "game_reader.h"
 
 STATUS game_load_spaces(Game *game, char *filename) {
     FILE *file = NULL;
@@ -114,41 +81,6 @@ STATUS game_add_space(Game *game, Space *space) {
   return OK;
 }
 
-
-STATUS game_set_object_location(Game *game, Id id) {
-  if (id == NO_ID) {
-    return ERROR;
-  }
-  
-  game->object_location = id;
-  space_set_object(game_get_space(game, id), TRUE);
-  return OK;
-}
-
-Id game_get_player_location(Game *game) {
-  return game->player_location;
-}
-
-Id game_get_object_location(Game *game) {
-  return game->object_location;
-}
-
-Space *game_get_space(Game *game, Id id) {
-  int i = 0;
-
-  if (id == NO_ID) {
-    return NULL;
-  }
-
-  for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++) {
-    if (id == space_get_id(game->spaces[i])) {
-      return game->spaces[i];
-    }
-  }
-
-  return NULL;
-}
-
 Id game_get_space_id_at(Game *game, int position) {
   if (position < 0 || position >= MAX_SPACES) {
     return NO_ID;
@@ -165,6 +97,32 @@ STATUS game_set_player_location(Game *game, Id id) {
   game->player_location = id;
 
   return OK;
+}
+
+STATUS game_set_object_location(Game *game, Id id) {
+  if (id == NO_ID) {
+    return ERROR;
+  }
+  
+  game->object_location = id;
+  space_set_object(game_get_space(game, id), TRUE);
+  return OK;
+}
+
+Space *game_get_space(Game *game, Id id) {
+  int i = 0;
+
+  if (id == NO_ID) {
+    return NULL;
+  }
+
+  for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++) {
+    if (id == space_get_id(game->spaces[i])) {
+      return game->spaces[i];
+    }
+  }
+
+  return NULL;
 }
 
 Id game_get_player_location(Game *game) {
