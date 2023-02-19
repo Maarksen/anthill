@@ -17,30 +17,84 @@
 /**
    Private functions
 */
+
+/**
+  * @brief It executes the command unknown
+  * @author Profesores PPROG
+  * 
+  * @param game a pointer to the game
+  */
 void game_command_unknown(Game *game);
+
+/**
+  * @brief It executes the command exit
+  * @author Profesores PPROG
+  * 
+  * @param game a pointer to the game
+  */
 void game_command_exit(Game *game);
+
+/**
+  * @brief It executes the command next
+  * @author Profesores PPROG
+  * 
+  * @param game a pointer to the game
+  */
 void game_command_next(Game *game);
+
+/**
+  * @brief It executes the command back
+  * @author Profesores PPROG
+  * 
+  * @param game a pointer to the game
+  */
 void game_command_back(Game *game);
+
+/**
+  * @brief It executes the command take
+  * @author Ignacio Martin
+  * 
+  * @param game a pointer to the game
+  */
 void game_command_take(Game *game);
+
+/**
+  * @brief It executes the command drop
+  * @author Ignacio Martin
+  * 
+  * @param game a pointer to the game
+  */
 void game_command_drop(Game *game);
 
 /**
    Game interface implementation
 */
 
+/** game_create allocates memory for a new game
+  *  and initializes its members
+  */
 STATUS game_create(Game *game) {
   int i;
 
+  /* Initialization of the spaces*/
   for (i = 0; i < MAX_SPACES; i++) {
     game->spaces[i] = NULL;
   }
+
+  /* Initialization of the player and the object*/
   game->player = player_create(1, "player");
+  game->player_location = NO_ID;
+  game->object = object_create(2);
   game->object_location = NO_ID;
+
   game->last_cmd = NO_CMD;
 
   return OK;
 }
 
+/** game_destroy frees the previous memory allocation 
+  *  for a game
+  */
 STATUS game_destroy(Game *game) {
   int i = 0;
 
@@ -48,10 +102,49 @@ STATUS game_destroy(Game *game) {
     space_destroy(game->spaces[i]);
   }
   player_destroy(game->player);
+  object_destroy(game->object);
 
   return OK;
 }
 
+/** It sets the location of the player
+  */
+STATUS game_set_player_location(Game *game, Id id) {
+  if (id == NO_ID) {
+    return ERROR;
+  }
+  
+  game->player_location = id;
+  return player_set_location(game->player, id);
+}
+
+/** It sets the location of the object
+  */
+STATUS game_set_object_location(Game *game, Id id) {
+  if (id == NO_ID) {
+    return ERROR;
+  }
+  
+  game->object_location = id;
+  object_set_id(game->object, id);
+  space_set_object(game_get_space(game, id), TRUE);
+  return OK;
+}
+
+/** It gets the location the player
+  */
+Id game_get_player_location(Game *game) {
+  return game->player_location;
+}
+
+/** It gets the location the object
+  */
+Id game_get_object_location(Game *game) {
+  return game->object_location;
+}
+
+/** It updates the game
+  */
 STATUS game_update(Game *game, T_Command cmd) {
   game->last_cmd = cmd;
   
@@ -87,10 +180,14 @@ STATUS game_update(Game *game, T_Command cmd) {
   return OK;
 }
 
+/** It gets the last command
+  */
 T_Command game_get_last_command(Game *game) {
   return game->last_cmd;
 }
 
+/** It prints the data of the game
+  */
 void game_print_data(Game *game) {
   int i = 0;
 
@@ -105,6 +202,8 @@ void game_print_data(Game *game) {
   printf("=> Player location: %d\n", (int)player_get_location(game->player));
 }
 
+/** It is executed when the game is over
+  */
 BOOL game_is_over(Game *game) {
   return FALSE;
 }
@@ -112,21 +211,30 @@ BOOL game_is_over(Game *game) {
 /**
    Calls implementation for each action 
 */
+
+/** It executes the command unknown
+  */
 void game_command_unknown(Game *game) {
 }
 
+/** It executes the command exit
+  */
 void game_command_exit(Game *game) {
 }
 
+/** It executes the command next
+  */
 void game_command_next(Game *game) {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
 
   space_id = game_get_player_location(game);
+  /* Error control */
   if (space_id == NO_ID) {
     return;
   }
 
+  /* Moves the player to the south */
   current_id = space_get_south(game_get_space(game, space_id));
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
@@ -135,16 +243,20 @@ void game_command_next(Game *game) {
   return;
 }
 
+/** It executes the command back
+  */
 void game_command_back(Game *game) {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
 
   space_id = game_get_player_location(game);
 
+  /* Error control */
   if (NO_ID == space_id) {
     return;
   }
 
+  /* Moves the player to the north */
   current_id = space_get_north(game_get_space(game, space_id));
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
@@ -153,15 +265,21 @@ void game_command_back(Game *game) {
   return;
 }
 
+/** It executes the command take
+  */
 void game_command_take(Game *game) {
   Id space_id = NO_ID;
 
   space_id = game_get_player_location(game);
 
+  /* Error control */
   if (NO_ID == space_id) {
     return;
   }
 
+  /** If the player is in the same location as the 
+    * object, the player takes the object 
+    */
   if (space_get_object(game_get_space(game, space_id))) {
     player_set_object(game->player, TRUE);
     space_set_object(game_get_space(game, space_id), FALSE);
@@ -171,6 +289,8 @@ void game_command_take(Game *game) {
   return;
 }
 
+/** It executes the command drop
+  */
 void game_command_drop(Game *game) {
   Id space_id = NO_ID;
   BOOL object = FALSE;
@@ -178,18 +298,18 @@ void game_command_drop(Game *game) {
   space_id = game_get_player_location(game);
   object = player_get_object(game->player);
 
+  /* Error control */
   if (NO_ID == space_id || !object) {
     return;
   }
 
+  /** The player drops the object
+    * in the space they are
+    */
   space_set_object(game_get_space(game, space_id), TRUE);
   player_set_object(game->player, FALSE);
   game_set_object_location(game, space_id);
   
   
   return;
-}
-
-Player* player_get(Game *game){
-    return game->player;
 }

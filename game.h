@@ -16,6 +16,7 @@
 #include "space.h"
 #include "types.h"
 #include "player.h"
+#include "object.h"
 
 /**
  * @brief Game
@@ -23,11 +24,12 @@
  * This struct stores all the information of a game.
  */
 typedef struct _Game {
-  Id object_location;
-  Id player_location;
-  Space *spaces[MAX_SPACES];
-  T_Command last_cmd;
-  Player *player;
+  Id object_location;         /*!< Id number of the object location */
+  Id player_location;         /*!< Id number of the player location */
+  Space *spaces[MAX_SPACES];  /*!< Array with all the spaces in the game */
+  T_Command last_cmd;         /*!< Enum value of the last command */
+  Player *player;             /*!< A pointer to the object */
+  Object *object;             /*!< A pointer to the player */
 } Game;
 
 /**
@@ -39,17 +41,6 @@ typedef struct _Game {
   */
 STATUS game_create(Game *game);
 
-
-/**
-  * @brief It creates a new game, with the data from a file
-  * @author Profesores PPROG
-  * 
-  * @param game a pointer to the game
-  * @param filename a character pointer to the name of the file
-  * @return OK, if everything goes well or ERROR if there was some mistake
-  */
-/*STATUS game_create_from_file(Game *game, char *filename);*/
-
 /**
   * @brief It updates the game, with the command executed
   * @author Profesores PPROG
@@ -59,9 +50,6 @@ STATUS game_create(Game *game);
   * @return OK, if everything goes well or ERROR if there was some mistake
   */
 STATUS game_update(Game *game, T_Command cmd);
-
-void game_command_take(Game *game);
-void game_command_drop(Game *game);
 
 /**
   * @brief It destroys a game, freeing the allocated memory
@@ -90,36 +78,6 @@ BOOL game_is_over(Game *game);
 void game_print_data(Game *game);
 
 /**
-  * @brief It adds a new space to the game
-  * @author Profesores PPROG
-  * 
-  * @param game a pointer to the game
-  * @param space a pointer to the new space
-  * @return OK, if everything goes well or ERROR if there was some mistake
-  */
-/*STATUS game_add_space(Game *game, Space *space);*/
-
-/**
-  * @brief It gets a pointer to the space with the id
-  * @author Profesores PPROG
-  * 
-  * @param game a pointer to the game
-  * @param id the id of the space
-  * @return a pointer to the space, if everything goes well or NULL if there was some mistake
-  */
-/* Space *game_get_space(Game *game, Id id); */
-
-/**
-  * @brief It gets the id of a position of the game
-  * @author Profesores PPROG
-  * 
-  * @param game a pointer to the game
-  * @param position the position 
-  * @return the id of the position
-  */
-/* Id game_get_space_id_at(Game *game, int position); */
-
-/**
   * @brief It sets the location of the player to the id
   * @author Profesores PPROG
   * 
@@ -127,7 +85,7 @@ void game_print_data(Game *game);
   * @param id the id of the new position
   * @return OK, if everything goes well or ERROR if there was some mistake
   */
-/* STATUS game_set_player_location(Game *game, Id id); */
+STATUS game_set_player_location(Game *game, Id id);
 
 /**
   * @brief It gets the id of a player location
@@ -136,7 +94,7 @@ void game_print_data(Game *game);
   * @param game a pointer to the game
   * @return the id of the player location
   */
-/* Id game_get_player_location(Game *game); */
+Id game_get_player_location(Game *game);
 
 /**
   * @brief It sets the object location
@@ -146,7 +104,7 @@ void game_print_data(Game *game);
   * @param id the id of the location
   * @return OK, if everything goes well or ERROR if there was some mistake
   */
-/* STATUS game_set_object_location(Game *game, Id id); */
+STATUS game_set_object_location(Game *game, Id id);
 
 /**
   * @brief It gets the id of an object location
@@ -155,7 +113,7 @@ void game_print_data(Game *game);
   * @param game a pointer to the game
   * @return the id of the object location
   */
-/* Id game_get_object_location(Game *game); */
+Id game_get_object_location(Game *game);
 
 /**
   * @brief It gets the last executed command
@@ -166,13 +124,4 @@ void game_print_data(Game *game);
   */
 T_Command game_get_last_command(Game *game);
 
-Player* player_get(Game *game);
-
-/**
-  * @brief It prints all atributes of a player
-  * @author Marek Buch
-  *
-  * @param player player structure we want to print
-  * @return a print message with player info
-  */
 #endif

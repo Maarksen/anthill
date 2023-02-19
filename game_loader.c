@@ -17,6 +17,9 @@
 #include "player.h"
 #include "game_reader.h"
 
+/** game_create_from_file creates a new game
+  *  and initializes its members
+  */
 STATUS game_create_from_file(Game *game, char *filename) {
     if (game_create(game) == ERROR) {
         return ERROR;

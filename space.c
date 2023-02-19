@@ -89,6 +89,7 @@ STATUS space_set_name(Space* space, char* name) {
   }
   return OK;
 }
+
 /** It gets the name of a space
   */
 const char * space_get_name(Space* space) {

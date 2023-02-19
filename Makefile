@@ -5,7 +5,6 @@ LIB = -lscreen -L .
 
 all : $(EXE)
 
-.PHONY : clean
 clean :
 	rm -rf *.o
 

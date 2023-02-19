@@ -15,10 +15,39 @@
 #include "game_loader.h"
 #include "command.h"
 
+/**
+  * @brief It creates a new game loop and initializes the game and the graphic engine
+  * @author Profesores PPROG
+  * 
+  * @param game a pointer to the game
+  * @param gengine a double pointer to the graphic engine
+  * @param file_name a string with the data for the game
+  * @return 0 if everything goes well, 1 if not
+  */
 int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name);
+
+/**
+  * @brief It runs the game loop
+  * @author Profesores PPROG
+  * 
+  * @param game a pointer to the game
+  * @param gengine a pointer to the graphic engine
+  */
 void game_loop_run(Game game, Graphic_engine *gengine);
+
+/**
+  * @brief It destroys the game and the graphic engine
+  * @author Profesores PPROG
+  * 
+  * @param game a pointer to the game
+  * @param gengine a pointer to the graphic engine
+  */
 void game_loop_cleanup(Game game, Graphic_engine *gengine);
 
+/** main function creates the game loop,
+  *  runs the game loop and 
+  *  finally it cleans up
+  */
 int main(int argc, char *argv[]) {
   Game game;
   Graphic_engine *gengine;
@@ -36,6 +65,9 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
+/** game_loop_init initializes the game loop,
+  *  creates the game and the graphic engine
+  */
 int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name) {
   if (game_create_from_file(game, file_name) == ERROR) {
     fprintf(stderr, "Error while initializing game.\n");
@@ -51,6 +83,10 @@ int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name) {
   return 0;
 }
 
+/** game_loop_run runs the game loop,
+  *  executes commands, updates the game
+  *  and the graphic engine
+  */
 void game_loop_run(Game game, Graphic_engine *gengine) {
   T_Command command = NO_CMD;
 
@@ -61,6 +97,9 @@ void game_loop_run(Game game, Graphic_engine *gengine) {
   }
 }
 
+/** game_loop_cleanup destroys the game
+  *  and the game engine
+  */
 void game_loop_cleanup(Game game, Graphic_engine *gengine) {
   game_destroy(&game);
   graphic_engine_destroy(gengine);

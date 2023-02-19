@@ -89,26 +89,6 @@ Id game_get_space_id_at(Game *game, int position) {
   return space_get_id(game->spaces[position]);
 }
 
-STATUS game_set_player_location(Game *game, Id id) {
-  if (id == NO_ID) {
-    return ERROR;
-  }
-
-  game->player_location = id;
-
-  return OK;
-}
-
-STATUS game_set_object_location(Game *game, Id id) {
-  if (id == NO_ID) {
-    return ERROR;
-  }
-  
-  game->object_location = id;
-  space_set_object(game_get_space(game, id), TRUE);
-  return OK;
-}
-
 Space *game_get_space(Game *game, Id id) {
   int i = 0;
 
@@ -123,12 +103,4 @@ Space *game_get_space(Game *game, Id id) {
   }
 
   return NULL;
-}
-
-Id game_get_player_location(Game *game) {
-  return game->player_location;
-}
-
-Id game_get_object_location(Game *game) {
-  return game->object_location;
 }
