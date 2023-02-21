@@ -25,7 +25,6 @@
  */
 typedef struct _Game {
   Id object_location;         /*!< Id number of the object location */
-  Id player_location;         /*!< Id number of the player location */
   Space *spaces[MAX_SPACES];  /*!< Array with all the spaces in the game */
   T_Command last_cmd;         /*!< Enum value of the last command */
   Player *player;             /*!< A pointer to the object */

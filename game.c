@@ -83,7 +83,6 @@ STATUS game_create(Game *game) {
 
   /* Initialization of the player and the object*/
   game->player = player_create(1, "player");
-  game->player_location = NO_ID;
   game->object = object_create(2);
   game->object_location = NO_ID;
 
@@ -110,12 +109,11 @@ STATUS game_destroy(Game *game) {
 /** It sets the location of the player
   */
 STATUS game_set_player_location(Game *game, Id id) {
-  if (id == NO_ID) {
-    return ERROR;
-  }
-  
-  game->player_location = id;
-  return player_set_location(game->player, id);
+    if (id == NO_ID) {
+        return ERROR;
+    }
+    player_set_location(game->player, id);
+    return OK;
 }
 
 /** It sets the location of the object
@@ -134,7 +132,7 @@ STATUS game_set_object_location(Game *game, Id id) {
 /** It gets the location the player
   */
 Id game_get_player_location(Game *game) {
-  return game->player_location;
+  return player_get_location(game->player);
 }
 
 /** It gets the location the object
