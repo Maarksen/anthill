@@ -8,14 +8,21 @@ all : $(EXE)
 clean :
 	rm -rf *.o
 
-$(EXE) : % : command.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o
+$(EXE) : % : command.o enemy.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"
 	@echo "# Has changed $<"
-	$(CC) $(CFLAGS) -o $@ command.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o $(LIB) 
+	$(CC) $(CFLAGS) -o $@ command.o enemy.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o $(LIB) 
 
 command.o : command.c command.h
+	@echo "#---------------------------"
+	@echo "# Generating $@ "
+	@echo "# Depepends on $^"
+	@echo "# Has changed $<"
+	$(CC) $(CFLAGS) -c $<
+
+enemy.o : enemy.c enemy.h
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"
