@@ -17,6 +17,7 @@
 #include "types.h"
 #include "player.h"
 #include "object.h"
+#include "enemy.h"
 
 /**
  * @brief Game
@@ -29,6 +30,7 @@ typedef struct _Game {
   T_Command last_cmd;         /*!< Enum value of the last command */
   Player *player;             /*!< A pointer to the object */
   Object *object;             /*!< A pointer to the player */
+  Enemy *enemy;
 } Game;
 
 /**

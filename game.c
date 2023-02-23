@@ -83,6 +83,14 @@ void game_command_take(Game *game);
 void game_command_drop(Game *game);
 
 /**
+  * @brief It executes the command attack
+  * @author Ignacio Martin
+  * 
+  * @param game a pointer to the game
+  */
+void game_command_attack(Game *game);
+
+/**
    Game interface implementation
 */
 
@@ -193,6 +201,10 @@ STATUS game_update(Game *game, T_Command cmd) {
 
     case DROP:
       game_command_drop(game);
+      break;
+
+    case ATTACK:
+      game_command_attack(game);
       break;
 
     default:
@@ -377,5 +389,27 @@ void game_command_drop(Game *game) {
   game_set_object_location(game, space_id);
   
   
+  return;
+}
+
+/** It executes the command attack
+  */
+void game_command_attack(Game *game) {
+  Id hp_player, hp_enemy;
+  int r;
+
+  hp_player = player_get_hp(game->player);
+  hp_enemy = enemy_get_hp(game->enemy);
+
+  r = rand() % (hp_enemy + hp_player);
+
+  if (r > hp_enemy) {
+    //win
+    enemy_destroy(game->enemy);
+  } else {
+    //lose
+    game_is_over(game);
+  }
+
   return;
 }
