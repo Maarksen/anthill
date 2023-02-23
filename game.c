@@ -107,7 +107,8 @@ STATUS game_create(Game *game) {
 
   /* Initialization of the player and the object*/
   game->player = player_create(1, "player");
-  game->object = object_create(2);
+  game->enemy = enemy_create(2, "enemy");
+  game->object = object_create(3);
   game->object_location = NO_ID;
 
   game->last_cmd = NO_CMD;
@@ -125,6 +126,7 @@ STATUS game_destroy(Game *game) {
     space_destroy(game->spaces[i]);
   }
   player_destroy(game->player);
+  enemy_destroy(game->enemy);
   object_destroy(game->object);
 
   return OK;
