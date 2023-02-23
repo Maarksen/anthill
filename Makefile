@@ -1,4 +1,4 @@
-CC = gcc -ansi -pedantic
+CC = gcc -pedantic
 CFLAGS = -Wall
 EXE = anthill
 LIB = -lscreen -L .

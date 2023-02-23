@@ -241,6 +241,12 @@ void game_print_data(Game *game) {
 /** It is executed when the game is over
   */
 BOOL game_is_over(Game *game) {
+  Id hp_player = player_get_hp(game->player);
+
+  if (hp_player <= 0){
+    return TRUE;
+  }
+  
   return FALSE;
 }
 
