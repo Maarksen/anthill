@@ -51,6 +51,22 @@ void game_command_next(Game *game);
 void game_command_back(Game *game);
 
 /**
+  * @brief It executes the command left
+  * @author Ignacio Martin
+  * 
+  * @param game a pointer to the game
+  */
+void game_command_left(Game *game);
+
+/**
+  * @brief It executes the command right
+  * @author Ignacio Martin
+  * 
+  * @param game a pointer to the game
+  */
+void game_command_right(Game *game);
+
+/**
   * @brief It executes the command take
   * @author Ignacio Martin
   * 
@@ -163,6 +179,14 @@ STATUS game_update(Game *game, T_Command cmd) {
       game_command_back(game);
       break;
 
+    case LEFT:
+      game_command_left(game);
+      break;
+
+    case RIGHT:
+      game_command_right(game);
+      break;
+
     case TAKE:
       game_command_take(game);
       break;
@@ -256,6 +280,50 @@ void game_command_back(Game *game) {
 
   /* Moves the player to the north */
   current_id = space_get_north(game_get_space(game, space_id));
+  if (current_id != NO_ID) {
+    game_set_player_location(game, current_id);
+  }
+  
+  return;
+}
+
+/** It executes the command left
+  */
+void game_command_left(Game *game) {
+  Id current_id = NO_ID;
+  Id space_id = NO_ID;
+
+  space_id = game_get_player_location(game);
+
+  /* Error control */
+  if (NO_ID == space_id) {
+    return;
+  }
+
+  /* Moves the player to the west */
+  current_id = space_get_west(game_get_space(game, space_id));
+  if (current_id != NO_ID) {
+    game_set_player_location(game, current_id);
+  }
+  
+  return;
+}
+
+/** It executes the command right
+  */
+void game_command_right(Game *game) {
+  Id current_id = NO_ID;
+  Id space_id = NO_ID;
+
+  space_id = game_get_player_location(game);
+
+  /* Error control */
+  if (NO_ID == space_id) {
+    return;
+  }
+
+  /* Moves the player to the east */
+  current_id = space_get_east(game_get_space(game, space_id));
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
   }
