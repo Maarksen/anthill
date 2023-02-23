@@ -47,7 +47,7 @@ STATUS player_destroy(Player *player);
   * @param object a boolean, specifying if the player has an object (TRUE) or not (FALSE)
   * @return a player with set atributes
   */
-Player *player_set(Player *player, Id id, char *name, Id location, BOOL object);
+Player *player_set(Player *player, Id id, char *name, Id location, int hp, BOOL object);
 
 /**
   * @brief It sets players location
@@ -78,13 +78,33 @@ Id player_get_location(Player *player);
 Id player_get_id(Player *player);
 
 /**
+  * @brief It sets the health of the enemy
+  * @author Marek Buch
+  *
+  * @param enemy a pointer to the enemy
+  * @param hp the health for the enemy
+  * @return the health of the enemy
+  */
+STATUS player_set_hp(Player *player, int hp);
+
+/**
+  * @brief It returns the health of the enemy
+  * @author Marek Buch
+  *
+  * @param enemy a pointer to the enemy
+  * @return the health of the enemy
+  */
+Id player_get_hp(Player *player);
+
+/**
   * @brief It sets whether the player has an object or not
   * @author Marek Buch
   *
   * @param player a pointer to the player
   * @param object a boolean, specifying if the player has an object (TRUE) or not (FALSE)
-  * @return OK, if everything goes well or ERROR if there was some mistake 
+  * @return OK, if everything goes well or ERROR if there was some mistake
   */
+
 STATUS player_set_object(Player *player, BOOL object);
 
 /**

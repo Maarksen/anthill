@@ -78,7 +78,17 @@ Id enemy_get_location(Enemy *enemy);
 Id enemy_get_id(Enemy *enemy);
 
 /**
-  * @brief It returns the id of the enemy
+  * @brief It sets the health of the enemy
+  * @author Marek Buch
+  *
+  * @param enemy a pointer to the enemy
+  * @param hp the health for the enemy
+  * @return the health of the enemy
+  */
+STATUS enemy_set_hp(Enemy *enemy, int hp);
+
+/**
+  * @brief It returns the health of the enemy
   * @author Marek Buch
   *
   * @param enemy a pointer to the enemy

@@ -16,13 +16,13 @@
 /**
  * @brief Enemy
  *
- * This struct stores all the information of a enemy.
+ * This struct stores all the information of an enemy.
  */
 struct _Enemy{
     Id id;          /*!< Id number of the enemy, it must be unique */
     char *name;     /*!< String with the name of the enemy */
     Id location;    /*!< Id number of the space where the enemy is*/
-    int health;
+    int health;     /*!< int health of a player*/
 };
 
 /** enemy_create allocates memory for a new enemy
@@ -106,6 +106,16 @@ Id enemy_get_id(Enemy *enemy){
         return enemy->id;
     }
     return NO_ID;
+}
+
+/** It sets the health of a enemy
+*/
+STATUS enemy_set_hp(Enemy *enemy, int hp){
+    if(enemy != NULL) {
+        enemy->health = hp;
+        return OK;
+    }
+    return ERROR;
 }
 
 /** It gets the health of a enemy

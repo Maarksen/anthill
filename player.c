@@ -22,6 +22,7 @@ struct _Player{
     Id id;          /*!< Id number of the player, it must be unique */
     char *name;     /*!< String with the name of the player */
     Id location;    /*!< Id number of the space where the player is*/
+    int health;     /*!< int health of a player*/
     BOOL object;    /*!< Whether the player has an object or not */
 };
 
@@ -44,6 +45,7 @@ Player* player_create(Id id, char* player_name){
     /* Initialization of a new player */
     new_player->id = id;
     new_player->name = player_name;
+    new_player->health = 100;
     new_player->location = NO_ID;
 
     return new_player;
@@ -65,7 +67,7 @@ STATUS player_destroy(Player *player){
 
 /** It sets the properties of a player
   */
-Player *player_set(Player *player, Id id, char *name, Id location, BOOL object){
+Player *player_set(Player *player, Id id, char *name, Id location, int hp, BOOL object){
     /* Error Control */
     if(player == NULL){
         return NULL;
@@ -75,6 +77,7 @@ Player *player_set(Player *player, Id id, char *name, Id location, BOOL object){
     player->name = name;
     player->location = location;
     player->object = object;
+    player->health = hp;
 
     return player;
 }
@@ -103,6 +106,25 @@ Id player_get_location(Player *player){
 Id player_get_id(Player *player){
     if(player != NULL) {
         return player->id;
+    }
+    return NO_ID;
+}
+
+/** It sets the health of a player
+*/
+STATUS player_set_hp(Player *player, int hp){
+    if(player != NULL) {
+        player->health = hp;
+        return OK;
+    }
+    return ERROR;
+}
+
+/** It gets the health of a player
+  */
+Id player_get_hp(Player *player){
+    if(player != NULL) {
+        return player->health;
     }
     return NO_ID;
 }
