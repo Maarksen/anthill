@@ -47,7 +47,7 @@ STATUS enemy_destroy(Enemy *enemy);
   * @param object a boolean, specifying if the enemy has an object (TRUE) or not (FALSE)
   * @return a enemy with set atributes
   */
-Enemy *enemy_set(Enemy *enemy, Id id, char *name, Id location, BOOL object);
+Enemy *enemy_set(Enemy *enemy, Id id, char *name, Id location, int hp);
 
 /**
   * @brief It sets enemys location
@@ -78,23 +78,13 @@ Id enemy_get_location(Enemy *enemy);
 Id enemy_get_id(Enemy *enemy);
 
 /**
-  * @brief It sets whether the enemy has an object or not
+  * @brief It returns the id of the enemy
   * @author Marek Buch
   *
   * @param enemy a pointer to the enemy
-  * @param object a boolean, specifying if the enemy has an object (TRUE) or not (FALSE)
-  * @return OK, if everything goes well or ERROR if there was some mistake 
+  * @return the health of the enemy
   */
-STATUS enemy_set_object(Enemy *enemy, BOOL object);
-
-/**
-  * @brief It gets whether the enemy has an object or not
-  * @author Marek Buch
-  *
-  * @param enemy a pointer to the enemy
-  * @return a boolean, specifying if in the space there is an object (TRUE) or not (FALSE)
-  */
-BOOL enemy_get_object(Enemy *enemy);
+Id enemy_get_hp(Enemy *enemy);
 
 /**
   * @brief It prints enemy

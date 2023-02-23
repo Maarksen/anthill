@@ -37,12 +37,10 @@ Player* player_create(Id id, char* player_name){
     }
 
     new_player = malloc(sizeof(Player));
-
     /* Error Control */
     if(new_player == NULL){
         return NULL;
     }
-
     /* Initialization of a new player */
     new_player->id = id;
     new_player->name = player_name;

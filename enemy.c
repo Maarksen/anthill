@@ -22,7 +22,7 @@ struct _Enemy{
     Id id;          /*!< Id number of the enemy, it must be unique */
     char *name;     /*!< String with the name of the enemy */
     Id location;    /*!< Id number of the space where the enemy is*/
-    BOOL object;    /*!< Whether the enemy has an object or not */
+    int health;
 };
 
 /** enemy_create allocates memory for a new enemy
@@ -37,16 +37,15 @@ Enemy* enemy_create(Id id, char* enemy_name){
     }
 
     new_enemy = malloc(sizeof(Enemy));
-
     /* Error Control */
     if(new_enemy == NULL){
         return NULL;
     }
-
     /* Initialization of a new enemy */
     new_enemy->id = id;
     new_enemy->name = enemy_name;
     new_enemy->location = NO_ID;
+    new_enemy->health = 100;
 
     return new_enemy;
 }
@@ -67,7 +66,7 @@ STATUS enemy_destroy(Enemy *enemy){
 
 /** It sets the properties of a enemy
   */
-Enemy *enemy_set(Enemy *enemy, Id id, char *name, Id location, BOOL object){
+Enemy *enemy_set(Enemy *enemy, Id id, char *name, Id location, int hp){
     /* Error Control */
     if(enemy == NULL){
         return NULL;
@@ -76,7 +75,7 @@ Enemy *enemy_set(Enemy *enemy, Id id, char *name, Id location, BOOL object){
     enemy->id = id;
     enemy->name = name;
     enemy->location = location;
-    enemy->object = object;
+    enemy->health = hp;
 
     return enemy;
 }
@@ -109,23 +108,13 @@ Id enemy_get_id(Enemy *enemy){
     return NO_ID;
 }
 
-/** It sets whether the enemy has an object or not
+/** It gets the health of a enemy
   */
-STATUS enemy_set_object(Enemy *enemy, BOOL object){
+Id enemy_get_hp(Enemy *enemy){
     if(enemy != NULL) {
-        enemy->object = object;
-        return OK;
+        return enemy->health;
     }
-    return ERROR;
-}
-
-/** It gets whether the enemy has an object or not
-  */
-BOOL enemy_get_object(Enemy *enemy){
-    if(enemy != NULL) {
-        return enemy->object;
-    }
-    return FALSE;
+    return NO_ID;
 }
 
 /** It prints the enemy information
@@ -136,7 +125,7 @@ STATUS enemy_print(Enemy *enemy){
         return ERROR;
     }
 
-    fprintf(stdout, "enemy (ID: %ld Name: %s Location: %ld :Object: %s)\n", enemy->id, enemy->name, enemy->location, (enemy->object ? "True" : "False"));
+    fprintf(stdout, "enemy (ID: %ld Name: %s Location: %ld)\n", enemy->id, enemy->name, enemy->location);
 
     return OK;
 }
