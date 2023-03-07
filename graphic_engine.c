@@ -16,8 +16,8 @@
 #include "space.h"
 #include "types.h"
 
-#define ROWS 23
-#define COLUMNS 80
+#define ROWS 50
+#define COLUMNS 92
 
 struct _Graphic_engine {
   Area *map, *descript, *banner, *help, *feedback;
@@ -36,11 +36,11 @@ Graphic_engine *graphic_engine_create() {
     return NULL;
   }
 
-  ge->map = screen_area_init(1, 1, 48, 13);
-  ge->descript = screen_area_init(50, 1, 29, 13);
-  ge->banner = screen_area_init(28, 15, 23, 1);
-  ge->help = screen_area_init(1, 16, 78, 2);
-  ge->feedback = screen_area_init(1, 19, 78, 3);
+  ge->map = screen_area_init(1, 1, 60, 40);
+  ge->descript = screen_area_init(62, 1, 29, 40);
+  ge->banner = screen_area_init(33, 42, 23, 1);
+  ge->help = screen_area_init(1, 43, 90, 2);
+  ge->feedback = screen_area_init(1, 46, 90, 3);
 
   return ge;
 }
@@ -60,8 +60,9 @@ void graphic_engine_destroy(Graphic_engine *ge) {
 }
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
-  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID;
+  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID, ply_loc = NO_ID, ene_loc = NO_ID;
   Space *space_act = NULL;
+  int player_hp, enemy_hp;
   char obj = '\0';
   char str[255];
   T_Command last_cmd = UNKNOWN;
@@ -130,6 +131,29 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     screen_area_puts(ge->descript, str);
   }
 
+  if ((ply_loc = game_get_player_location(game)) != NO_ID) {
+    sprintf(str, " ");
+    screen_area_puts(ge->descript, str);
+    sprintf(str, "  Player location:%d", (int)ply_loc);
+    screen_area_puts(ge->descript, str);
+
+    player_hp = player_get_hp(game->player);
+    sprintf(str, "  Player health:%d", player_hp);
+    screen_area_puts(ge->descript, str);
+  }
+
+  if ((ene_loc = enemy_get_location(game->enemy)) != NO_ID) {
+    sprintf(str, " ");
+    screen_area_puts(ge->descript, str);
+    sprintf(str, "  Enemy location:%d", (int)ene_loc);
+    screen_area_puts(ge->descript, str);
+
+    enemy_hp = enemy_get_hp(game->enemy);
+    sprintf(str, "  Enemy health:%d", enemy_hp);
+    screen_area_puts(ge->descript, str);
+  }
+
+
   /* Paint in the banner area */
   screen_area_puts(ge->banner, "    The anthill game ");
 
@@ -137,13 +161,18 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "     next or n, back or b, left or l, right or r, take or t, drop or d,            exit or e");
+  sprintf(str, "     next or n, back or b, left or l, right or r, take or t, drop or d, attack or a,           exit or e");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
   last_cmd = game_get_last_command(game);
-  sprintf(str, " %s (%s)", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
-  screen_area_puts(ge->feedback, str);
+  if(last_cmd == NO_CMD || last_cmd == UNKNOWN) {
+    sprintf(str, " -%s (%s): ERROR", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
+    screen_area_puts(ge->feedback, str);
+  } else {
+    sprintf(str, " -%s (%s): OK", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
+    screen_area_puts(ge->feedback, str);
+  }
 
   /* Dump to the terminal */
   screen_paint();

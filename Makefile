@@ -3,10 +3,13 @@ CFLAGS = -Wall
 EXE = anthill
 LIB = -lscreen -L .
 
-all : $(EXE)
+all : $(EXE) clear
+
+clear :
+	rm -rf *.o
 
 clean :
-	rm -rf *.o
+	rm -rf *.o anthill
 
 $(EXE) : % : command.o enemy.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o
 	@echo "#---------------------------"
