@@ -4,7 +4,7 @@
  * @file enemy.c
  * @author Marek Buch
  * @version 1.0
- * @date 09-02-2023
+ * @date 23-02-2023
  * @copyright GNU Public License
  */
 
