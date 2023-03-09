@@ -18,6 +18,7 @@
 #include "player.h"
 #include "object.h"
 #include "enemy.h"
+#include "enemy_test.h"
 
 /**
  * @brief Game

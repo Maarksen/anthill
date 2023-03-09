@@ -116,6 +116,8 @@ STATUS game_create(Game *game) {
 
   game->last_cmd = NO_CMD;
 
+  //enemy_testing();
+
   return OK;
 }
 
