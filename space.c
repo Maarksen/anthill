@@ -21,6 +21,7 @@
 struct _Space {
   Id id;                    /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the space */
+  char *gdesc[10];             /*!< Array of strings*/
   Id north;                 /*!< Id of the space at the north */
   Id south;                 /*!< Id of the space at the south */
   Id east;                  /*!< Id of the space at the east */
@@ -46,6 +47,9 @@ Space* space_create(Id id) {
   /* Initialization of an empty space*/
   newSpace->id = id;
   newSpace->name[0] = '\0';
+  for(int i = 0; i < 5; i++){
+      newSpace->gdesc[i] = "         ";
+  }
   newSpace->north = NO_ID;
   newSpace->south = NO_ID;
   newSpace->east = NO_ID;
