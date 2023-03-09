@@ -11,12 +11,12 @@ clear :
 clean :
 	rm -rf *.o anthill
 
-$(EXE) : % : command.o enemy.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o
+$(EXE) : % : command.o enemy.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o enemy_test.o
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"
 	@echo "# Has changed $<"
-	$(CC) $(CFLAGS) -o $@ command.o enemy.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o $(LIB) 
+	$(CC) $(CFLAGS) -o $@ command.o enemy.o game_loader.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o enemy_test.o $(LIB) 
 
 command.o : command.c command.h
 	@echo "#---------------------------"
@@ -29,6 +29,13 @@ enemy.o : enemy.c enemy.h
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"
+	@echo "# Has changed $<"
+	$(CC) $(CFLAGS) -c $<
+
+enemy_test.o : enemy_test.c enemy_test.h
+	@echo "#---------------------------"
+	@echo "# Generating $@ "
+	@echo "# Depends on $^"
 	@echo "# Has changed $<"
 	$(CC) $(CFLAGS) -c $<
 
