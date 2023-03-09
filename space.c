@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "space.h"
+#include "Set.h"
 
 /**
  * @brief Space
@@ -26,7 +27,7 @@ struct _Space {
   Id south;                 /*!< Id of the space at the south */
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
-  BOOL object;              /*!< Whether the space has an object or not */
+  Set * objects;            /*!< the set of objects the space has */
 };
 
 /** space_create allocates memory for a new space
@@ -54,7 +55,7 @@ Space* space_create(Id id) {
   newSpace->south = NO_ID;
   newSpace->east = NO_ID;
   newSpace->west = NO_ID;
-  newSpace->object = FALSE;
+  newSpace->objects = Set_create();
 
   return newSpace;
 }
@@ -66,7 +67,7 @@ STATUS space_destroy(Space* space) {
   if (!space) {
     return ERROR;
   }
-
+  Set_destroy(space->objects);
   free(space);
   space = NULL;
   return OK;
@@ -177,21 +178,63 @@ Id space_get_west(Space* space) {
 
 /** It sets whether the space has an object or not
   */
-STATUS space_set_object(Space* space, BOOL value) {
+STATUS space_set_object(Space* space, Id newId) {
   if (!space) {
     return ERROR;
   }
-  space->object = value;
+  set_Add(space->objects,newid);
   return OK;
 }
 /** It gets whether the space has an object or not
   */
-BOOL space_get_object(Space* space) {
+Id space_get_object(Space* space) {
   if (!space) {
-    return FALSE;
+    return NO_ID;
   }
-  return TRUE;
+  return et_getId(space->objects, Set_getLastId(space->objects));;
 }
+/** It tells if a determined Id is in the space
+  */
+BOOL space_contains_id(Space* space, Id id){
+    int i=0;
+    if(!space||id<0){
+        return FALSE;
+    }
+    while(Set_getId(space->objects, i)!='\0'){
+        if(Set_getId(space->objects, i)==id){
+            return TRUE;
+        }
+        i++;
+    }
+    return FALSE;
+}
+/** It sets whether the space has an object or not
+  */
+STATUS space_set_object_at(Space* space, Id newid , int pos) {
+  if (!space||pos<0) {
+    return ERROR;
+  }
+  if(pos==0){
+      if(space_set_object(space,newid)==ERROR){
+          return ERROR;
+      }else{
+          return OK;
+      }
+  }
+  if(Set_setId(space->objects, pos, newid)==ERROR){
+      return ERROR;
+  }
+  return OK;
+}
+/** It gets the object´s Id from a determined position
+  */
+Id space_get_object_at(Space* space, int pos) {
+  if (!space||Set_getId(space->objects, pos)==NULL) {
+    return -1;
+  }
+  return Set_getId(space->objects, pos);
+}
+
 
 /** It prints the space information
   */

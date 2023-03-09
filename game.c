@@ -33,9 +33,12 @@ void game_command_unknown(Game *game);
   * @param game a pointer to the game
   */
 void game_command_exit(Game *game);
-
+s [MAX_SPACES]
 /**
-  * @brief It executes the command next
+  * @brief It executes STATUS game_set_player_location(Game *game, Id id);
+Id game_get_player_location(Game *game);
+Id game_get_object_location(Game *game, int pos); 
+the command next
   * @author Profesores PPROG
   * 
   * @param game a pointer to the game
@@ -94,7 +97,7 @@ void game_command_attack(Game *game);
    Game interface implementation
 */
 
-/** game_create allocates memory for a new game
+/** game_create allocates memory for *!< Id number of the object location */a new game
   *  and initializes its members
   */
 STATUS game_create(Game *game) {
@@ -163,8 +166,8 @@ Id game_get_player_location(Game *game) {
 
 /** It gets the location the object
   */
-Id game_get_object_location(Game *game) {
-  return game->object_location;
+Id game_get_object_location(Game *game, int pos) {
+  return Set_getId_at(game->object, pos);
 }
 
 /** It updates the game

@@ -1,9 +1,45 @@
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include "game.h"
 #include "game_reader.h"
+#include "game.h"
+#include "space.h"
+
+STATUS game_load_spaces(Game *game, char *filename){
+  int i;
+
+  for (i = 0; i < MAX_SPACES; i++) {
+    game->spaces[i] = NULL;
+  }
+
+  game->player_location = NO_ID;
+  for (i = 0; i < MAX_SPACES; i++) {
+    game->object[i] = set_create();
+    
+  }
+  game->last_cmd = NO_CMD;
+
+  return OK;
+
+}
+
+
+STATUS game_create_from_file(Game *game, char *filename) {
+    if (game_create(game) == ERROR) {
+        return ERROR;
+    }
+
+    if (game_load_spaces(game, filename) == ERROR) {
+        return ERROR;
+    }
+
+    /* The player and the object are located in the first space */
+    game_set_player_location(game, game_get_space_id_at(game, 0));
+    game_set_object_location(game, game_get_space_id_at(game, 0));
+
+    return OK;
+}
 
 STATUS game_load_spaces(Game *game, char *filename) {
     FILE *file = NULL;
@@ -81,12 +117,23 @@ STATUS game_add_space(Game *game, Space *space) {
   return OK;
 }
 
-Id game_get_space_id_at(Game *game, int position) {
-  if (position < 0 || position >= MAX_SPACES) {
-    return NO_ID;
-  }
 
-  return space_get_id(game->spaces[position]);
+STATUS game_set_object_location(Game *game, Id id, int pos) {
+  if (id == NO_ID) {
+    return ERROR;
+  }
+  
+  game->object_location[pos] = id;
+  space_set_object(game_get_space(game, id), TRUE);
+  return OK;
+}
+
+Id game_get_player_location(Game *game) {
+  return game->player_location;
+}
+
+Id game_get_object_location(Game *game, int pos) {
+  return game->object_locations[pos];
 }
 
 Space *game_get_space(Game *game, Id id) {
@@ -104,3 +151,30 @@ Space *game_get_space(Game *game, Id id) {
 
   return NULL;
 }
+
+Id game_get_space_id_at(Game *game, int position) {
+  if (position < 0 || position >= MAX_SPACES) {
+    return NO_ID;
+  }
+
+  return space_get_id(game->spaces[position]->id);
+}
+
+STATUS game_set_player_location(Game *game, Id id) {
+  if (id == NO_ID) {
+    return ERROR;
+  }
+
+  game->player_location = id;
+
+  return OK;
+}
+
+Id game_get_player_location(Game *game) {
+  return game->player_location;
+}
+
+Id game_get_object_location(Game *game, int posObj, int posSet) {
+  return game->object[posObj]->ids[posSet];
+}
+

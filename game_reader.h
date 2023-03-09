@@ -56,4 +56,9 @@ Id game_get_space_id_at(Game *game, int position);
   */
 Space *game_get_space(Game *game, Id id);
 
+STATUS game_set_player_location(Game *game, Id id);
+Id game_get_player_location(Game *game);
+Id game_get_object_location(Game *game, int pos); 
+
+
 #endif

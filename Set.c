@@ -113,4 +113,11 @@ set->ids[pos]=id;
 return OK;
 }
 
+Id Set_getLastId(Set * set){
+  if(!set){
+    return -1;
+  }
+  return set->n_ids;
+}
+
 

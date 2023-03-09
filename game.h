@@ -24,8 +24,7 @@
  *
  * This struct stores all the information of a game.
  */
-typedef struct _Game {
-  Id object_location;         /*!< Id number of the object location */
+typedef struct _Game {         
   Space *spaces[MAX_SPACES];  /*!< Array with all the spaces in the game */
   T_Command last_cmd;         /*!< Enum value of the last command */
   Player *player;             /*!< A pointer to the object */
@@ -114,7 +113,7 @@ STATUS game_set_object_location(Game *game, Id id);
   * @param game a pointer to the game
   * @return the id of the object location
   */
-Id game_get_object_location(Game *game);
+Id game_get_object_location(Game *game, int pos);
 
 /**
   * @brief It gets the last executed command

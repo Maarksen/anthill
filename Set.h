@@ -91,4 +91,14 @@ Id Set_getId(Set * set, int pos);
 *@return Ok if the id was inserted correctly, ERROR otherwise
 */
 STATUS Set_setId(Set * set, int pos, Id id);
+
+/**
+* @brief tells the last Id from a set
+* @author Daniel Cabrero
+*
+* @param set pointer to the source set where you want to know the last id from
+*       
+*@return the last Id of the set, if error returns -1
+*/
+Id Set_getLastId( Set *set);
 #endif
