@@ -321,7 +321,7 @@ void game_command_left(Game *game) {
   }
 
   /* Moves the player to the west */
-  current_id = space_get_west(game_get_space(game, space_id));
+  current_id = space_get_east(game_get_space(game, space_id));
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
   }
@@ -343,7 +343,7 @@ void game_command_right(Game *game) {
   }
 
   /* Moves the player to the east */
-  current_id = space_get_east(game_get_space(game, space_id));
+  current_id = space_get_west(game_get_space(game, space_id));
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
   }
@@ -413,9 +413,10 @@ void game_command_attack(Game *game) {
 
   if (r > hp_enemy) {
     //win
-    enemy_destroy(game->enemy);
+    enemy_set_hp(game->enemy, 0);
   } else {
     //lose
+  player_set_hp(game->player, 0);
     game_is_over(game);
   }
 

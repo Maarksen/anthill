@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "graphic_engine.h"
 #include "game.h"
 #include "game_loader.h"
@@ -69,6 +70,8 @@ int main(int argc, char *argv[]) {
   *  creates the game and the graphic engine
   */
 int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name) {
+  srand(time(NULL));
+
   if (game_create_from_file(game, file_name) == ERROR) {
     fprintf(stderr, "Error while initializing game.\n");
     return 1;

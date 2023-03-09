@@ -31,6 +31,7 @@ STATUS game_create_from_file(Game *game, char *filename) {
     /* The player and the object are located in the first space */
     game_set_player_location(game, game_get_space_id_at(game, 0));
     game_set_object_location(game, game_get_space_id_at(game, 0));
+    enemy_set_location(game->enemy, game_get_space_id_at(game, 3));
 
     return OK;
 }
