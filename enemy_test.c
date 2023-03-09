@@ -72,5 +72,3 @@ void enemy_testing(){
     printf("%s[SUCCESS] enemy_destroy successful\n", KGRN);
 
 }
-
-
