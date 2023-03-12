@@ -149,6 +149,7 @@ STATUS space_set_east(Space* space, Id id) {
   space->east = id;
   return OK;
 }
+
 /** It gets the id of the space located at the east
   */
 Id space_get_east(Space* space) {
@@ -207,6 +208,30 @@ BOOL space_contains_id(Space* space, Id id){
         i++;
     }
     return FALSE;
+}
+
+/** It sets the gdesc field of a space
+  */
+STATUS space_set_gdesc(Space *space, char **new_gdesc){
+    if(!space){
+        return ERROR;
+    }
+    else {
+        for(int i = 0; i < 5; i++){
+            memcpy(space->gdesc[i], new_gdesc[i], sizeof(new_gdesc));
+        }
+    }
+}
+
+/** It returns the gdesc field of a space
+  */
+const char ** space_get_gdesc(Space *space){
+    if(!space){
+        return NULL;
+    }
+    else{
+        return (const char **) space->gdesc;
+    }
 }
 /** It sets whether the space has an object or not
   */
