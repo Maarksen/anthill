@@ -21,6 +21,7 @@
 struct _Object {
   Id id;            /*!< Id number of the object, it must be unique */
   char *name;       /*!< Name of the object */
+  Id location;
 };
 
 /** object_create allocates memory for a new object
@@ -79,6 +80,29 @@ Id object_get_id(Object* object) {
     return NO_ID;
   }
   return object->id;
+}
+
+/** It sets the location of the object
+  */
+STATUS object_set_location(Object* object, Id location) {
+  /* Error control */
+  if (!object || location == NO_ID) {
+    return ERROR;
+  }
+  object->location = location;
+
+  return OK;
+}
+
+/** It sets the location of the object
+  */
+Id object_get_location(Object* object) {
+  /* Error control */
+  if (!object) {
+    return NO_ID;
+  }
+
+  return object->location;
 }
 
 /** It sets the name of the object

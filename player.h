@@ -47,7 +47,7 @@ STATUS player_destroy(Player *player);
   * @param object a boolean, specifying if the player has an object (TRUE) or not (FALSE)
   * @return a player with set atributes
   */
-Player *player_set(Player *player, Id id, char *name, Id location, int hp, BOOL object);
+Player *player_set(Player *player, Id id, char *name, Id location, int hp, Object *object);
 
 /**
   * @brief It sets players location
@@ -105,7 +105,7 @@ Id player_get_hp(Player *player);
   * @return OK, if everything goes well or ERROR if there was some mistake
   */
 
-STATUS player_set_object(Player *player, BOOL object);
+STATUS player_set_object(Player *player, Object *object);
 
 /**
   * @brief It gets whether the player has an object or not
@@ -114,7 +114,7 @@ STATUS player_set_object(Player *player, BOOL object);
   * @param player a pointer to the player
   * @return a boolean, specifying if in the space there is an object (TRUE) or not (FALSE)
   */
-BOOL player_get_object(Player *player);
+Id player_get_object(Player *player);
 
 /**
   * @brief It prints player

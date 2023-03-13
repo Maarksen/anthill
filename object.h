@@ -53,6 +53,25 @@ STATUS object_set_id(Object* object, Id id);
 Id object_get_id(Object* object);
 
 /**
+  * @brief It sets the location of an object
+  * @author Ignacio Martin
+  * 
+  * @param object a pointer to the object
+  * @param location the identification number for the object location
+  * @return OK, if everything goes well or ERROR if there was some mistake
+  */
+STATUS object_set_location(Object* object, Id id);
+
+/**
+  * @brief It gets the location of an object
+  * @author Ignacio Martin
+  * 
+  * @param object a pointer to the object
+  * @return the location of the object
+  */
+Id object_get_location(Object* object);
+
+/**
   * @brief It sets the name of an object
   * @author Ignacio Martin
   * 

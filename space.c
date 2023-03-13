@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "object.h"
+#include "game_reader.h"
 #include "space.h"
 #include "Set.h"
 
@@ -27,7 +29,7 @@ struct _Space {
   Id south;                 /*!< Id of the space at the south */
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
-  Set * objects;            /*!< the set of objects the space has */
+  Object * objects[MAX_OBJ];            /*!< the set of objects the space has */
 };
 
 /** space_create allocates memory for a new space
@@ -55,7 +57,9 @@ Space* space_create(Id id) {
   newSpace->south = NO_ID;
   newSpace->east = NO_ID;
   newSpace->west = NO_ID;
-  newSpace->objects = Set_create();
+  for(int i = 0; i<MAX_OBJ; i++){
+    newSpace->objects[i] = NULL;
+  }
 
   return newSpace;
 }
@@ -67,7 +71,9 @@ STATUS space_destroy(Space* space) {
   if (!space) {
     return ERROR;
   }
-  Set_destroy(space->objects);
+  for (int i=0; i<MAX_OBJ; i++){
+    object_destroy(space->objects[i]);
+  }
   free(space);
   space = NULL;
   return OK;
@@ -180,32 +186,42 @@ Id space_get_west(Space* space) {
 /** It sets whether the space has an object or not
   */
 STATUS space_set_object(Space* space, Id newId) {
+  Object *ob;
   if (!space) {
     return ERROR;
   }
-  set_Add(space->objects,newid);
-  return OK;
+  for (int i=0; i<MAX_OBJ; i++){
+    if (space->objects[i] == NULL){
+      ob = object_create(newId);
+      space->objects[i] = ob;
+      return OK;
+    }
+  }
+  return ERROR;
 }
 /** It gets whether the space has an object or not
   */
-Id space_get_object(Space* space) {
+Object *space_get_object(Space* space, Id id) {
   if (!space) {
-    return NO_ID;
+    return NULL;
   }
-  return et_getId(space->objects, Set_getLastId(space->objects));;
+  for (int i = 0; i < MAX_OBJ; i++) {
+    if (object_get_id(space->objects[i]) == id){
+      return space->objects[i];
+    }
+  }
+  return NULL;
 }
 /** It tells if a determined Id is in the space
   */
 BOOL space_contains_id(Space* space, Id id){
-    int i=0;
     if(!space||id<0){
         return FALSE;
     }
-    while(Set_getId(space->objects, i)!='\0'){
-        if(Set_getId(space->objects, i)==id){
-            return TRUE;
-        }
-        i++;
+    for (int i=0; i<MAX_OBJ; i++){
+      if(object_get_id(space->objects[i]) == id){
+        return TRUE;
+      }
     }
     return FALSE;
 }
@@ -221,43 +237,48 @@ STATUS space_set_gdesc(Space *space, char **new_gdesc){
             memcpy(space->gdesc[i], new_gdesc[i], sizeof(new_gdesc));
         }
     }
+    return OK;
 }
 
 /** It returns the gdesc field of a space
   */
-const char ** space_get_gdesc(Space *space){
-    if(!space){
-        return NULL;
-    }
-    else{
-        return (const char **) space->gdesc;
-    }
+char* space_get_gdesc(Space* space,int pos){
+  if(!space||pos<0||pos>2){
+    return NULL;
+  }
+
+  return space->gdesc[pos];
 }
+
 /** It sets whether the space has an object or not
   */
 STATUS space_set_object_at(Space* space, Id newid , int pos) {
-  if (!space||pos<0) {
+  Object * ob;
+
+  if (!space||pos<0||pos>MAX_OBJ) {
     return ERROR;
   }
-  if(pos==0){
-      if(space_set_object(space,newid)==ERROR){
-          return ERROR;
-      }else{
-          return OK;
-      }
+  if(space->objects[pos] != NULL){
+    return ERROR;
   }
-  if(Set_setId(space->objects, pos, newid)==ERROR){
-      return ERROR;
-  }
+
+  ob = object_create(newid);
+
+  space->objects[pos] = ob;
+
   return OK;
+
 }
 /** It gets the object´s Id from a determined position
   */
 Id space_get_object_at(Space* space, int pos) {
-  if (!space||Set_getId(space->objects, pos)==NULL) {
-    return -1;
+  if (!space || pos < 0 || pos > MAX_OBJ) {
+    return NO_ID;
   }
-  return Set_getId(space->objects, pos);
+  if(!space->objects[pos]){
+    return NO_ID;
+  }
+  return object_get_id(space->objects[pos]);
 }
 
 
@@ -301,10 +322,10 @@ STATUS space_print(Space* space) {
   }
 
   /* 3. Print if there is an object in the space or not */
-  if (space_get_object(space)) {
-    fprintf(stdout, "---> Object in the space.\n");
-  } else {
-    fprintf(stdout, "---> No object in the space.\n");
+  for(int i=0;i<MAX_OBJ; i++){
+    if(space->objects[i] != NULL){
+      object_print(space->objects[i]);
+    }
   }
 
   return OK;

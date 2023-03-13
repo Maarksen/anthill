@@ -12,6 +12,8 @@
 #define SPACE_H
 
 #include "types.h"
+#include "Set.h"
+#include "object.h"
 
 typedef struct _Space Space;
 
@@ -153,7 +155,7 @@ STATUS space_set_gdesc(Space *space, char **new_gdesc);
   * @param space a pointer to the space
   * @return gdesc if everything goes well or NULL if there was some mistake
   */
-const char ** space_get_gdesc(Space *space);
+char* space_get_gdesc(Space* space,int pos);
 
 /**
   * @brief It sets whether the space has an object or not
@@ -173,7 +175,7 @@ STATUS space_set_object(Space* space, Id newId);
   * @param space a pointer to the space
   * @return a boolean, specifying if in the space there is an object (TRUE) or not (FALSE)
   */
-Id space_get_object(Space* space);
+Object *space_get_object(Space* space, Id id);
 
 /**
   * @brief It prints the space information

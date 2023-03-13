@@ -23,7 +23,7 @@ struct _Player{
     char *name;     /*!< String with the name of the player */
     Id location;    /*!< Id number of the space where the player is*/
     int health;     /*!< int health of a player*/
-    BOOL object;    /*!< Whether the player has an object or not */
+    Object *object;    /*!< Whether the player has an object or not */
 };
 
 /** player_create allocates memory for a new player
@@ -67,7 +67,7 @@ STATUS player_destroy(Player *player){
 
 /** It sets the properties of a player
   */
-Player *player_set(Player *player, Id id, char *name, Id location, int hp, BOOL object){
+Player *player_set(Player *player, Id id, char *name, Id location, int hp, Object *object){
     /* Error Control */
     if(player == NULL){
         return NULL;
@@ -131,7 +131,7 @@ Id player_get_hp(Player *player){
 
 /** It sets whether the player has an object or not
   */
-STATUS player_set_object(Player *player, BOOL object){
+STATUS player_set_object(Player *player, Object *object){
     if(player != NULL) {
         player->object = object;
         return OK;
@@ -141,11 +141,11 @@ STATUS player_set_object(Player *player, BOOL object){
 
 /** It gets whether the player has an object or not
   */
-BOOL player_get_object(Player *player){
+Id player_get_object(Player *player){
     if(player != NULL) {
-        return player->object;
+        return object_get_id(player->object);
     }
-    return FALSE;
+    return NO_ID;
 }
 
 /** It prints the player information

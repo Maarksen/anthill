@@ -88,9 +88,9 @@ void space_testing(){
         printf("%s[FAIL] space_get_east failed\n", KRED);
     }
 
-    space_set_object(space, TRUE);
-    space_set_north(space1, TRUE);
-    if(space_get_object(space) == TRUE && space_get_object(space1) == TRUE){
+    space_set_object(space, 01);
+    space_set_north(space1, 02);
+    if(space_get_object(space, 01) != NULL && space_get_object(space1, 02) != NULL){
         printf("%s[SUCCESS] space_set_object successful\n", KGRN);
         printf("%s[SUCCESS] space_get_object successful\n", KGRN);
     }
@@ -102,4 +102,9 @@ void space_testing(){
     space_destroy(space);
     space_destroy(space1);
     printf("%s[SUCCESS] space_destroy successful\n", KGRN);
+}
+
+int main(){
+    space_testing();
+    return 0;
 }

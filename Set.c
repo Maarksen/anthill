@@ -24,8 +24,8 @@ Id n_ids;
 };
 
 
- Set * Set_create(){
-    Set *newSet;
+Set * Set_create(){
+  Set *newSet;
 
   
   newSet = (Set *) malloc(sizeof (Set));
@@ -33,8 +33,15 @@ Id n_ids;
     return NULL;
   }
 
-  
-  newSet->ids[0] ='\0' ;
+  newSet->ids = (Id*) malloc(MAX_SPACES*sizeof(Id));
+  if (newSet->ids == NULL) {
+    free(newSet);
+    return NULL;
+  }
+
+  for (int i = 0; i<MAX_SPACES; i++){
+    newSet->ids[i] = 0;
+  }
   newSet->n_ids = 0;
   
 
@@ -46,13 +53,14 @@ STATUS Set_destroy(Set *set){
     return ERROR;
   }
 
+  free(set->ids);
   free(set);
   set = NULL;
   return OK;
 }
 
 STATUS Set_Add(Set *set, Id newId){
-if(!set||set->ids[set->n_ids]=='\0'){
+if(!set){
   return ERROR;
 }
 set->ids[set->n_ids]=newId;
@@ -89,11 +97,12 @@ if(i!=set->n_ids){
 }
 
 BOOL Set_isEmpty(Set * set){
-if (!set||set->ids[set->n_ids]=='\0'){
-  return TRUE;
-}else{
+  if (!set){
+    return TRUE;
+  }else if(set->n_ids < 1){
+    return TRUE;
+  }
   return FALSE;
-}
 
 }
 
@@ -106,7 +115,7 @@ Id Set_getId(Set * set, int pos){
 }
 
 STATUS Set_setId(Set * set, int pos, Id id){
-if(!set||pos<0||id<=0||set->ids[pos]!=0){
+if(!set||pos<0||id<0){
   return ERROR;
 }
 set->ids[pos]=id;
@@ -117,7 +126,7 @@ Id Set_getLastId(Set * set){
   if(!set){
     return -1;
   }
-  return set->n_ids;
+  return set->ids[set->n_ids-1];
 }
 
 

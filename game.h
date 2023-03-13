@@ -19,6 +19,7 @@
 #include "object.h"
 #include "enemy.h"
 #include "enemy_test.h"
+#include "Set.h"
 
 /**
  * @brief Game
@@ -29,8 +30,9 @@ typedef struct _Game {
   Space *spaces[MAX_SPACES];  /*!< Array with all the spaces in the game */
   T_Command last_cmd;         /*!< Enum value of the last command */
   Player *player;             /*!< A pointer to the object */
-  Object *object;             /*!< A pointer to the player */
+  Object *objects[MAX_OBJ];             /*!< A pointer to the player */
   Enemy *enemy;
+  Set *objects_set;
 } Game;
 
 /**
@@ -86,7 +88,7 @@ void game_print_data(Game *game);
   * @param id the id of the new position
   * @return OK, if everything goes well or ERROR if there was some mistake
   */
-STATUS game_set_player_location(Game *game, Id id);
+//STATUS game_set_player_location(Game *game, Id id);
 
 /**
   * @brief It gets the id of a player location
@@ -95,17 +97,7 @@ STATUS game_set_player_location(Game *game, Id id);
   * @param game a pointer to the game
   * @return the id of the player location
   */
-Id game_get_player_location(Game *game);
-
-/**
-  * @brief It sets the object location
-  * @author Profesores PPROG
-  * 
-  * @param game a pointer to the game
-  * @param id the id of the location
-  * @return OK, if everything goes well or ERROR if there was some mistake
-  */
-STATUS game_set_object_location(Game *game, Id id);
+//Id game_get_player_location(Game *game);
 
 /**
   * @brief It gets the id of an object location
@@ -114,7 +106,7 @@ STATUS game_set_object_location(Game *game, Id id);
   * @param game a pointer to the game
   * @return the id of the object location
   */
-Id game_get_object_location(Game *game, int pos);
+//Id game_get_object_location(Game *game, int pos);
 
 /**
   * @brief It gets the last executed command

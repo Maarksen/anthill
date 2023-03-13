@@ -1,28 +1,4 @@
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "game_reader.h"
-#include "game.h"
-#include "space.h"
-
-STATUS game_load_spaces(Game *game, char *filename){
-  int i;
-
-  for (i = 0; i < MAX_SPACES; i++) {
-    game->spaces[i] = NULL;
-  }
-
-  game->player_location = NO_ID;
-  for (i = 0; i < MAX_SPACES; i++) {
-    game->object[i] = set_create();
-    
-  }
-  game->last_cmd = NO_CMD;
-
-  return OK;
-
-}
 
 
 STATUS game_create_from_file(Game *game, char *filename) {
@@ -34,9 +10,12 @@ STATUS game_create_from_file(Game *game, char *filename) {
         return ERROR;
     }
 
+    if (game_load_objects(game, filename) == ERROR) {
+        return ERROR;
+    }
+
     /* The player and the object are located in the first space */
     game_set_player_location(game, game_get_space_id_at(game, 0));
-    game_set_object_location(game, game_get_space_id_at(game, 0));
 
     return OK;
 }
@@ -97,6 +76,53 @@ STATUS game_load_spaces(Game *game, char *filename) {
     return status;
 }
 
+STATUS game_load_objects(Game *game, char *filename) {
+    FILE *file = NULL;
+    char line[WORD_SIZE] = "";
+    char name[WORD_SIZE] = "";
+    char *toks = NULL;
+    Id id = NO_ID, location = NO_ID;
+    Object *object = NULL;
+    STATUS status = OK;
+
+    if (!filename) {
+        return ERROR;
+    }
+
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        return ERROR;
+    }
+
+    while (fgets(line, WORD_SIZE, file)) {
+        if (strncmp("#o:", line, 3) == 0) {
+            toks = strtok(line + 3, "|");
+            id = atol(toks);
+            toks = strtok(NULL, "|");
+            strcpy(name, toks);
+            toks = strtok(NULL, "|");
+            location = atol(toks);
+#ifdef DEBUG
+            printf("Leido: %ld|%s|%ld\n", id, name, location);
+#endif
+            object = object_create(id);
+            if (object != NULL) {
+                object_set_location(object, location);
+                object_set_id(object, id);
+                game_add_object(game, object);
+            }
+        }
+    }
+
+    if (ferror(file)) {
+        status = ERROR;
+    }
+
+    fclose(file);
+
+    return status;
+}
+
 STATUS game_add_space(Game *game, Space *space) {
   int i = 0;
 
@@ -117,24 +143,48 @@ STATUS game_add_space(Game *game, Space *space) {
   return OK;
 }
 
+STATUS game_add_object(Game *game, Object *object) {
+  int i = 0;
+
+  if (object == NULL) {
+    return ERROR;
+  }
+
+  while (i < MAX_SPACES && game->objects[i] != NULL) {
+    i++;
+  }
+
+  if (i >= MAX_SPACES) {
+    return ERROR;
+  }
+
+  game->objects[i] = object;
+
+  return OK;
+}
 
 STATUS game_set_object_location(Game *game, Id id, int pos) {
   if (id == NO_ID) {
     return ERROR;
   }
   
-  game->object_location[pos] = id;
+  object_set_location(game->objects[pos], id);
   space_set_object(game_get_space(game, id), TRUE);
   return OK;
 }
 
+/** It gets the location the player
+  */
 Id game_get_player_location(Game *game) {
-  return game->player_location;
+  return player_get_location(game->player);
 }
 
+/** It gets the location the object
+  */
 Id game_get_object_location(Game *game, int pos) {
-  return game->object_locations[pos];
+  return object_get_location(game->objects[pos]);
 }
+
 
 Space *game_get_space(Game *game, Id id) {
   int i = 0;
@@ -157,7 +207,7 @@ Id game_get_space_id_at(Game *game, int position) {
     return NO_ID;
   }
 
-  return space_get_id(game->spaces[position]->id);
+  return space_get_id(game->spaces[position]);
 }
 
 STATUS game_set_player_location(Game *game, Id id) {
@@ -165,16 +215,11 @@ STATUS game_set_player_location(Game *game, Id id) {
     return ERROR;
   }
 
-  game->player_location = id;
+  player_set_location(game->player, id);
 
   return OK;
 }
 
-Id game_get_player_location(Game *game) {
-  return game->player_location;
+Object *game_get_object(Game *game, int i){
+  return game->objects[i];
 }
-
-Id game_get_object_location(Game *game, int posObj, int posSet) {
-  return game->object[posObj]->ids[posSet];
-}
-

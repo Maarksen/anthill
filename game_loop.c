@@ -13,7 +13,7 @@
 #include <time.h>
 #include "graphic_engine.h"
 #include "game.h"
-#include "game_loader.h"
+#include "game_reader.h"
 #include "command.h"
 
 /**
