@@ -218,8 +218,9 @@ STATUS space_set_gdesc(Space *space, char **new_gdesc){
     }
     else {
         for(int i = 0; i < 5; i++){
-            memcpy(space->gdesc[i], new_gdesc[i], sizeof(new_gdesc));
+            strcpy(space->gdesc[i], new_gdesc[i]);
         }
+        return OK;
     }
 }
 
