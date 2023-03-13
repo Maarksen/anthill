@@ -88,6 +88,31 @@ void space_testing(){
         printf("%s[FAIL] space_get_east failed\n", KRED);
     }
 
+    char *new_gdesc[10] = {"---------", "000000000", "000000000", "111111111", "444444444"};
+    space_set_gdesc(space, new_gdesc);
+    space_set_gdesc(space1, new_gdesc);
+
+    const char **test_gdesc = space_get_gdesc(space);
+    const char **test_gdesc1 = space_get_gdesc(space1);
+    BOOL is_okay = FALSE;
+    for(int i = 0; i < 5; i++){
+        if(strcmp(test_gdesc[i], new_gdesc[i]) != 0){
+            is_okay = TRUE;
+        }
+        if(strcmp(test_gdesc1[i], new_gdesc[i]) != 0){
+            is_okay = TRUE;
+        }
+    }
+
+    if(!is_okay){
+        printf("%s[SUCCESS] space_set_gdesc successful\n", KGRN);
+        printf("%s[SUCCESS] space_get_gdesc successful\n", KGRN);
+    }
+    else{
+        printf("%s[FAIL] space_set_gdesc failed\n", KRED);
+        printf("%s[FAIL] space_get_gdesc failed\n", KRED);
+    }
+
     space_set_object(space, 01);
     space_set_north(space1, 02);
     if(space_get_object(space, 01) != NULL && space_get_object(space1, 02) != NULL){
